@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>99TV Cricket Commentary</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5; /* Light gray background for a clean look */
+            color: #333;
+        }
+
+
+        /* Header styles */
+        .header {
+            background-color: #004d00; /* Dark green header */
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+	.time{
+    font-size: 13px;
+    color: #464646;
+    margin: 0px;
+}
+        
+        .navbar {
+            background-color: #ffffff; /* White navbar */
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navbar a {
+            color: #000; /* Black navigation links */
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
+            cursor: pointer;
+        }
+
+        .navbar a:hover {
+            color: #007bff; /* Blue hover color for links */
+        }
+
+        /* Section styles */
+        .section {
+            display: none; /* Hide all sections by default */
+            padding: 30px;
+            margin: 40px auto;
+            width: 80%;
+            background-color: #ffffff; /* White background for sections */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease-in-out; /* Smooth transition for appearing sections */
+        }
+
+        .active {
+            display: block; /* Show active section */
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .match {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            flex: 1; /* Make each match item flexible */
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .match:hover {
+            background-color: #f1f1f1; /* Light gray background on hover */
+        }
+
+        .all-matches {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px; /* Adjust gap as needed */
+        }
+
+        /* Table styles */
+        .scorecard table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .scorecard th, .scorecard td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9; /* Light gray background for table rows */
+        }
+
+        .scorecard th {
+            background-color: #e9ecef; /* Slightly darker gray for table headers */
+        }
+
+        .commentary p {
+            text-align: left;
+            margin: 5px 0;
+        }
+
+        .out-status {
+            color: red;
+            font-weight: bold;
+        }
+.slider{
+    margin: auto;
+    width: 80%;
+    overflow: hidden;
+    position: relative;
+    background-color: white;
+}
+.news-container{
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+.news-container::-webkit-scrollbar{
+    display: none;
+}
+.news-card{
+    flex: 0 0 auto;
+    width: 21%;
+    border-right: 1px solid #e4e4e4;
+    line-height: 10px;
+    margin-left: 45px;
+    margin-bottom: 20px;
+}
+.s1{
+    font-size: 13px;
+    font-weight: 700;
+}
+.s2{
+    font-size: 13px;
+    font-weight: 700;
+    color: rgb(94, 94, 94);
+}
+.s3{
+    text-decoration: none;
+    font-size: 13px;
+}
+.pre-btn, .nxt-btn{
+    border: none;
+    width: 26px;
+    position: absolute;
+    top: 0;
+    display: flex;
+    
+    font-size: 35px;
+    color: #008b6a;
+    cursor: pointer;
+    z-index: 9;
+}
+
+.pre-btn{
+    left: 0;
+    margin: 6% 0.1%;
+}
+.nxt-btn{
+    right: 0;
+    margin: 6% 0.9%;
+}
+/* ************************* */
+#middleSection{
+    width: 80%;
+    margin: auto;
+    display: flex;
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.first, .second, .third {
+    background-color: white;
+    margin-top: 7px;
+    padding: 20px;
+}
+
+.first, .second, .third {
+    /* Flex properties to make all divs equal height */
+    flex: 1;
+    /* Remove fixed heights to allow flex-grow to handle heights */
+    height: auto;
+    box-sizing: border-box;
+}
+
+.first {
+    margin-right: 7px;
+}
+
+.third {
+    margin-left: 7px;
+}
+
+
+/* ////////////////////////////Utility classes/////////////// */
+.grnh4{
+    padding-left: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-transform: capitalize;
+    color: #008b6a;
+}
+
+.pblack{
+    font-size: 15px;
+}
+.pgray{
+    font-size: 15px;
+    color: #464646;
+    margin: 0px;
+    margin-bottom: 20px;
+    line-height: 25px;
+}
+.time{
+    font-size: 13px;
+    color: #464646;
+    margin: 0px;
+}
+.line{
+    border-bottom: 1px solid #e4e4e4;
+    margin: 10PX;
+}
+.gap{
+    border: 3px solid #e4e4e4;
+    width: 105%;
+}
+
+.smallimg{
+    width: 150px;
+    margin-right: 20px;
+}
+.smallmiddle{
+    display: flex;
+    font-size: 11px;
+}
+.blu{
+    font-size: 12px;
+    line-height: 25px;
+    color: blue;
+    font-weight: 700;
+}
+
+/* //////////////////////////////////////////////  Footer /////////////////////// */
+#footer{
+    background-color: #464646;
+    height: 300px;
+    margin-top: 160px;
+}
+.mid{
+    margin: auto;
+    width: 70%;
+    padding-top: 25px;
+    display: flex;
+    justify-content: space-around;
+    color: white;
+}
+.icons,h4~p>a,h4~a>p{
+    color: white;
+    font-size: 15px;
+}
+.mid+p{
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgb(201, 201, 201);
+}
+.icons{
+    padding-right: 20px;
+}
+
+/* ////////////////////////////////////////////////////////// */
+
+/* ************************************* */
+
+/* ****************************************************************** */
+.newsfirst{
+    width: 69%;
+    background-color: white;
+    height: 3550px;
+    padding:20px;
+    border-right: 1px solid gray;
+}
+.newssecond{
+    width: 30%;
+    background-color: white;
+    height: 3400px;
+    /* margin-left: 7px; */
+    padding: 0px 30px;
+}
+.newsimg{
+    width: 280px;
+    height: 170px;
+    margin: 20px;
+}
+.newsmiddle{
+    display: flex;
+    font-size: 15px;
+}
+.subnav{
+    font-weight: 500;
+}
+.subnav:hover{
+    color: #008b6a;
+    font-weight: 700;
+    border-bottom: 3px solid #008b6a;
+    padding-bottom: 10px;
+}
+.selected{
+    color: #008b6a;
+    font-weight: 700;
+    border-bottom: 3px solid #008b6a;
+    padding-bottom: 10px;
+}
+.videos{
+    width: 96.4%;
+    background-color: white;
+    height: 2000px;
+    padding: 0px 20px;
+}
+
+.videoslider{
+    margin: auto;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: white;
+}
+.video-btn{
+    margin-top: 60px;
+    margin-right: 30px;
+    font-size: 50px;
+}
+
+        /* Add a slight animation to the commentary log */
+        #commentaryLog p {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Style the button */
+        #info button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #info button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style the displayed score section */
+        #currentScore {
+            background-color: #e9f7ef; /* Light green background */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ5sq2jWyQ7ye1JOSSiIH43SJALbl2i51m1w&s"></img>
+        <h1>99TV Cricket Commentary</h1>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a onclick="showSection('matches')">Match Schedules</a>
+        <a onclick="showSection('info')">Info</a>
+        <a onclick="showSection('scorecard')">Scorecard</a>
+        <a onclick="showSection('commentary')">Commentary</a>
+    </div>
+
+    <!-- Match Schedules Section -->
+    <div id="matches" class="section active">
+        <h2>Match Schedules</h2>
+        <div class="all-matches">
+            <div class="match" onclick="selectMatch(1)">
+                <h2>Match 1</h2>
+                <p>Date: September 03, 2024</p>
+                <p>Team A vs Team B</p>
+            </div>
+            <div class="match" onclick="selectMatch(2)">
+                <h2>Match 2</h2>
+                <p>Date: September 03, 2024</p>
+                <p>Team C vs Team D</p>
+            </div>
+            <!-- Add more matches as needed -->
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <div id="info" class="section">
+        <h2>Info</h2>
+        <p><strong>Batting Team:</strong> <span id="battingTeam">Team A</span></p>
+        <p><strong>Bowling Team:</strong> <span id="bowlingTeam">Team B</span></p>
+        <p><strong>Number of Matches:</strong> 1</p>
+        <p><strong>Current Over:</strong> <span id="currentOver">0.0</span></p>
+        <p><strong>Wickets:</strong> <span id="wickets">0</span></p>
+        <p><strong>Run Rate:</strong> <span id="runRate">0.00</span></p>
+        <button onclick="displayScore()">Show Current Score</button> <!-- New Button -->
+        <div id="currentScore" style="display: none;">
+            <p><strong>Total Score:</strong> <span id="totalScoreDisplay">0</span></p>
+            <p><strong>Wickets:</strong> <span id="wicketsDisplay">0</span></p>
+            <p><strong>Current Over:</strong> <span id="currentOverDisplay">0.0</span></p>
+            <p><strong>Run Rate:</strong> <span id="runRateDisplay">0.00</span></p>
+        </div>
+    </div>
+
+    <!-- Scorecard Section -->
+    <div id="scorecard" class="section">
+        <h2>Scorecard</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Player Name</th>
+                    <th>Runs</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="scoreboard">
+                <!-- Dynamic Scoreboard Rows -->
+            </tbody>
+        </table>
+        <p><strong>Total Score:</strong> <span id="totalScore">0</span></p>
+    </div>
+
+    <!-- Commentary Section -->
+    <div id="commentary" class="section">
+        <h2>Commentary</h2>
+        <div id="commentaryLog">
+            <!-- Dynamic Commentary -->
+        </div>
+    </div>
+
+    <script>
+        // Function to show the selected section and hide others
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the selected section
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+        }
+
+        let matchData = {
+            1: {
+                battingTeam: 'Team A',
+                bowlingTeam: 'Team B',
+                players: [
+                    'Rohith Sharma (c)', 'Virat Kohli', 'Surya Kumar Yadav', 'Rishabh Pant (WK)','Ravindra Jadeja', 'Hardik Pandya (VC)', 'Axar Patel', 'Shivam Dube', 'Arshdeep Singh', 'Jasprit Bumrah', 'Mohammed Siraj'
+                ],
+                scores: Array(11).fill(0),
+                statuses: Array(11).fill('Batting'),
+                totalScore: 0,
+                currentBatsman: 0,
+                wickets: 0,
+                balls: 0,
+                overs: 20,
+                currentOver: 0.0
+                
+            },
+            2: {
+                battingTeam: 'Team C',
+                bowlingTeam: 'Team D',
+                players: [
+                    'David Warner', 'Steve Smith', 'Marnus Labuschagne', 'Glenn Maxwell', 'Marcus Stoinis',
+                    'Alex Carey (WK)', 'Pat Cummins (c)', 'Mitchell Starc', 'Josh Hazlewood', 'Adam Zampa', 'Nathan Lyon'
+                ],
+                scores: Array(11).fill(0),
+                statuses: Array(11).fill('Batting'),
+                totalScore: 0,
+                currentBatsman: 0,
+                wickets: 0,
+                balls: 0,
+                overs: 20,
+                currentOver: 0.0
+            }
+        };
+
+        let selectedMatch = 1;
+        let matchInterval;
+
+        function selectMatch(matchId) {
+            selectedMatch = matchId;
+            resetMatch();
+            updateMatch();
+            clearInterval(matchInterval); // Clear any previous intervals
+            matchInterval = setInterval(updateMatch, 2000); // Start new match simulation
+            showSection('info'); // Show the info section after selecting a match
+        }
+
+        // Function to reset match details
+        function resetMatch() {
+            let match = matchData[selectedMatch];
+            match.scores = Array(11).fill(0);
+            match.statuses = Array(11).fill('Batting');
+            match.totalScore = 0;
+            match.currentBatsman = 0;
+            match.wickets = 0;
+            match.balls = 0;
+            match.currentOver = 0.0;
+
+            document.getElementById('battingTeam').textContent = match.battingTeam;
+            document.getElementById('bowlingTeam').textContent = match.bowlingTeam;
+            document.getElementById('currentOver').textContent = match.currentOver;
+            document.getElementById('wickets').textContent = match.wickets;
+            document.getElementById('runRate').textContent = '0.00';
+        }
+
+        // Function to update the scoreboard and commentary
+        function updateMatch() {
+            let match = matchData[selectedMatch];
+
+            if (match.currentOver >= match.overs || match.wickets >= 10) {
+                declareResult();
+                clearInterval(matchInterval); // Stop the automatic updates when the match is over
+                return;
+            }
+
+            const outcomes = [0, 1, 2, 3, 4, 6, 'Duckout'];
+            let outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+
+            let commentaryLog = document.getElementById('commentaryLog');
+            let scoreboard = document.getElementById('scoreboard');
+
+            let commentaryText = '';
+
+            if (outcome === 'Duckout') {
+                commentaryText = match.players[match.currentBatsman] + ' is out!';
+                match.statuses[match.currentBatsman] = 'Out';
+                match.currentBatsman++;
+                match.wickets++;
+            } else {
+                commentaryText = match.players[match.currentBatsman] + ' scored ' + outcome + ' runs.';
+                match.scores[match.currentBatsman] += outcome;
+                match.totalScore += outcome;
+            }
+
+            // Update Commentary
+            let commentaryEntry = document.createElement('p');
+            commentaryEntry.textContent = commentaryText;
+            commentaryLog.appendChild(commentaryEntry);
+
+            // Update Scoreboard
+            scoreboard.innerHTML = '';
+            for (let i = 0; i < match.players.length; i++) {
+                let statusText = match.statuses[i] === 'Out' ? '<span class="out-status">Out</span>' : match.statuses[i];
+                let row = `<tr>
+                    <td>${match.players[i]}</td>
+                    <td>${match.scores[i]}</td>
+                    <td>${statusText}</td>
+                </tr>`;
+                scoreboard.innerHTML += row;
+            }
+
+            // Update total score
+            document.getElementById('totalScore').textContent = match.totalScore;
+
+            // Update balls, overs, and run rate
+            match.balls++;
+            match.currentOver = (Math.floor(match.balls / 6)) + '.' + (match.balls % 6);
+            let runRate = (match.totalScore / (match.balls / 6)).toFixed(2);
+
+            // Update match info
+            document.getElementById('currentOver').textContent = match.currentOver;
+            document.getElementById('wickets').textContent = match.wickets;
+            document.getElementById('runRate').textContent = runRate;
+        }
+
+        // Function to declare the result of the match
+        function declareResult() {
+            let match = matchData[selectedMatch];
+            let commentaryLog = document.getElementById('commentaryLog');
+            let resultText = 'End of Innings. Total Score: ' + match.totalScore + ' for ' + match.wickets + ' wickets.';
+            let resultEntry = document.createElement('p');
+            resultEntry.textContent = resultText;
+            resultEntry.style.fontWeight = 'bold';
+            commentaryLog.appendChild(resultEntry);
+        }
+
+        // Function to display the current score when button is clicked
+        function displayScore() {
+            let match = matchData[selectedMatch];
+            document.getElementById('totalScoreDisplay').textContent = match.totalScore;
+            document.getElementById('wicketsDisplay').textContent = match.wickets;
+            document.getElementById('currentOverDisplay').textContent = match.currentOver;
+            document.getElementById('runRateDisplay').textContent = (match.totalScore / (match.balls / 6)).toFixed(2);
+            document.getElementById('currentScore').style.display = 'block';
+        }
+
+        // Show the default section (Match Schedules) on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('matches');
+        });
+    </script>
+<!-- ************************************************************************************************* -->
+        <section class="slider">
+            <h4 class="grnh4">FEATURED MATCHES</h4>
+            <i class="pre-btn fa-solid fa-circle-chevron-left"></i>
+            <i class="nxt-btn fa-solid fa-circle-chevron-right"></i>
+            <div class="news-container">
+                <a href="" class="news-card">
+                    <p class="s2">RSA&emsp;&emsp;&emsp; 106-8(20)</p>
+                    <p class="s1">IND&emsp;&emsp;110-2(16.4)</p>
+                    <p class="s3">India Won by 8 wkts</p>
+                </a>
+                <a href="" class="news-card">
+                    <p class="s1">JT&emsp;&emsp;&emsp; 226-4(20)</p>
+                    <p class="s2">GAW&emsp;&emsp;189-8(20)</p>
+                    <p class="s3">Jamaica Tallawahs won by 37 runs</p>
+                </a>
+                <a href="" class="news-card">
+                    <p class="s2">PAK&emsp;&emsp;&emsp; 145(19)</p>
+                    <p class="s1">ENG&emsp;&emsp;239-7(20)</p>
+                    <p class="s3">England won by 6 runs</p>
+                </a>
+                <a href="" class="news-card">
+                    <p class="s1">MT&emsp;&emsp;&emsp;161-3(19.4)</p>
+                    <p class="s2">INDS...&emsp;&emsp;</p>
+                    <p class="s3">India Capitals opt to bowl...</p>
+                </a>
+                <a href="" class="news-card">
+                    <p class="s1">NOTT...&emsp;&emsp;&emsp; 226-4(20)</p>
+                    <p class="s2">DUR&emsp;&emsp;207 & 114</p>
+                    <p class="s3">Nottinghamshire won by 462 runs</p>
+                </a>
+                <a href="" class="news-card">
+                    <p class="s1">LANC&emsp;&emsp;&emsp; 512</p>
+                    <p class="s2">SUR&emsp;&emsp;209 & 173(f/o)</p>
+                    <p class="s3">Lancashire won by an innings and 130</p>
+                </a>
+                <a href="" class="news-card">
+                    <p class="s1">JT&emsp;&emsp;&emsp; 226-4(20)</p>
+                    <p class="s2">GAW&emsp;&emsp;189-8(20)</p>
+                    <p class="s3">Jamaica Tallawahs won by 37 runs</p>
+                </a>
+
+
+            </div>
+        </section>
+        <div id="middleSection">
+            <div class="first">
+                <div><h4 class="grnh4">LATEST NEWS</h4>
+                    <a href="" class="pblack">Naseem Shah hospitalised with pneumonia</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+
+                    <a href="" class="pblack">ICC set to release ITT for the USA, Australia, Canada and the West Indies</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                    
+                    <a href="" class="pblack">Warner, Starc, Marsh and Stoinis return for West Indies T20Is</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                    
+                    <a href="" class="pblack">CSA issues combined ITT for SA20 and international fixtures</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                    
+                    <a href="" class="pblack">Buttler can return "maybe in the last game or two" against Pakistan</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                    
+                    
+                    
+                    <a href="" class="pblack">Shami, Hooda unlikely for SA series</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                    
+                    <a href="" class="pblack">Green's performances very impressive and bodes well, says McDonald</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                    
+                    <a href="" class="pblack">Rohit backs Harshal, Bhuvneshwar to regain bowling rhythm</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                    
+                    <a href="" class="pblack">Suryakumar, Kohli star in chase as India clinch series</a>
+                    <p class="time">5h ago</p>
+                    <div class="line"></div>
+                </div>
+                <div class="gap"></div>
+                <div>
+                    <h4 class="grnh4">LATEST PHOTOS</h4>
+                    <img src="https://www.cricbuzz.com/a/img/v1/165x95/i1/c243538/pakistan-v-england-4th-t20i.jpg" alt="">
+                    <a href="" class="pblack">Pakistan v England, 4th T20I, Karachi</a>
+                    <p class="time">Sun, Sep 25 2022</p>
+                    <div class="line"></div>
+                    <img src="https://www.cricbuzz.com/a/img/v1/165x95/i1/c243446/india-vs-australia-3rd-t20i.jpg" alt="">
+                    <a href="" class="pblack">India vs Australia, 3rd T20I, Hyderabad</a>
+                    <p class="time">Sun, Sep 25 2022</p>
+                    <div class="line"></div>
+                    <img src="https://www.cricbuzz.com/a/img/v1/165x95/i1/c243375/jhulan-goswami-from-chakdaha.jpg" alt="">
+                    <a href="" class="pblack">Jhulan Goswami: From Chakdaha to Lord's</a>
+                    <p class="time">Sat, Sep 24 2022</p>
+                    <div class="line"></div>
+                    <img src="https://www.cricbuzz.com/a/img/v1/165x95/i1/c243294/india-vs-australia-2nd-t20i.jpg" alt="">
+                    <a href="" class="pblack">India vs Australia, 2nd T20I, Nagpur</a>
+                    <p class="time">Fri, Sep 23 2022</p>
+                    <div class="line"></div>
+                    <img src="https://www.cricbuzz.com/a/img/v1/165x95/i1/c243225/pakistan-v-england-2nd-t20i.jpg" alt="">
+                    <a href="" class="pblack">Pakistan v England, 2nd T20I, Karachi</a>
+                    <p class="time">Thu, Sep 22 2022</p>
+                    <div class="line"></div>
+                    <img src="https://www.cricbuzz.com/a/img/v1/165x95/i1/c243165/pakistan-vs-england-1st-t20i.jpg" alt="">
+                    <a href="" class="pblack">Pakistan vs England, 1st T20I, Karachi</a>
+                    <p class="time">Tue, Sep 20 2022</p>
+                    <div class="line"></div>
+                </div>
+                <div class="gap"></div>
+                <div>
+                    <h4 class="grnh4">SCHEDULE</h4>
+                    <a href="" class="pblack">India vs South Africa, 2nd T20I</a>
+                    <p class="time">Fri Sep 30 • 8:00 PM GMT</p>
+                    <div class="line"></div>
+                    <a href="" class="pblack">India vs South Africa, 3rd T20I</a>
+                    <p class="time">Sun Oct 02 • 7:00 PM GMT</p>
+                    <div class="line"></div>
+                    <a href="" class="pblack">India vs South Africa, 1st T20I</a>
+                    <p class="time">Tue Oct 04 • 7:00 PM GMT</p>
+                    <div class="line"></div>
+                    <a href="" class="pblack">Australia vs West Indies, 1st T20I</a>
+                    <p class="time">Tue Oct 04 • 7:00 PM GMT</p>
+                    <div class="line"></div>
+                    <a href="" class="pblack">India vs South Africa, 1st ODI</a>
+                    <p class="time">Thu Oct 06 • 1:30 PM GMT</p>
+                    <div class="line"></div>
+                    <a href="" class="pblack">Pakistan vs England, 6th T20I</a>
+                    <p class="time">Wed Oct 05 • 1:40 PM GMT</p>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="second">
+                <p class="pblack">MASSIVE INJURY WOES</p>
+                <a href=""><img src="https://www.cricbuzz.com/a/img/v1/420x235/i1/c243691/jasprit-bumrah-in-danger-of-mi.jpg" alt=""></a>
+                <h2>Jasprit Bumrah in danger of missing T20 World Cup</h2>
+                <p class="pgray">India's star pacer is out of the South Africa series with a recurring back injury</p>
+                <div class="line"></div>
+
+                <p class="pblack">SOUTH AFRICA TOUR OF INDIA, 2022</p>
+                <a href=""><img src="https://www.cricbuzz.com/a/img/v1/420x235/i1/c243647/suryakumar-rahul-and-pacers-h.jpg" alt=""></a>
+                <h2>Suryakumar, Rahul and pacers help India take 1-0 lead</h2>
+                <p class="pgray">Arshdeep Singh and Deepak Chahar combined to restrict South Africa to 106 before India got over the line in the 17th over with eight wickets in hand</p>
+                <a href="" class="blu">Scorecard <br> 1st T20I / As it happened <br> Umesh, Shreyas, Shahbaz Ahmed added to India squad</a>
+                <div class="line"></div>
+
+                <p class="pblack">ENGLAND TOUR OF PAKISTAN, 2022</p>
+                <a href=""><img src="https://www.cricbuzz.com/a/img/v1/420x235/i1/c243683/rizwan-bowlers-shine-as-pakis.jpg" alt=""></a>
+                <h2>Rizwan, bowlers shine as Pakistan seal last-over thriller</h2>
+                <p class="pgray">Aamer Jamal defended 15 off the final over on debut</p>
+                <a href="" class="blu">Scorecard <br> Buttler can return "maybe in the last game or two" against Pakistan <br> Naseem Shah hospitalised with pneumonia</a>
+                <div class="line"></div>
+                                
+                <p class="pblack">ICC MEDIA RIGHTS</p>
+                <a href=""><img src="https://www.cricbuzz.com/a/img/v1/420x235/i1/c243684/icc-set-to-release-itt-for-the.jpg" alt=""></a>
+                <h2>ICC set to release ITT for the USA, Australia, Canada and the West Indies</h2>
+                <p class="pgray">Over the next 24 hours, the ICC will be releasing its next Invitation To Tender for the media rights in the aforementioned regions</p>
+                <div class="line"></div>
+                                
+                <p class="pblack">CPL 2022</p>
+                <a href=""><img src="https://www.cricbuzz.com/a/img/v1/420x235/i1/c243687/shamarh-brooks-powers-jamaica.jpg" alt=""></a>
+                <h2>Shamarh Brooks powers Jamaica Tallawahs to CPL final</h2>
+                <p class="pgray">The opener scored a fiery century to set up a final showdown against Barbados Royals</p>
+                <div class="line"></div>
+
+                <p class="pblack">NEWS DIGEST</p>
+                <a href=""><img src="https://www.cricbuzz.com/a/img/v1/420x235/i1/c243688/drs-to-be-introduced-in-bbl-w.jpg" alt=""></a>
+                <h2>DRS to be introduced in BBL, WBBL for first time</h2>
+                <p class="pgray">News byte that you may have otherwise missed</p>
+                <div class="line"></div>
+                <!-- ************************************************************************* -->
+                
+                <p class="pgray">Opener Caleb Jewell powered the chase with an undefeated 127 off just 97 deliveries</p>
+                <div class="line"></div>
+
+            </div>
+            <div class="third">
+                <h4 class="grnh4">FEATURED VIDEOS</h4>
+                <iframe width="340" height="180" src="https://www.youtube.com/embed/RLjcjg82qBY"></iframe>
+                <a href="" class="pblack">Live हिन्दी: भारत vs साउथ अफ़्रीका, पहला T20I, पोस्ट-मैच शो</a>
+                <p class="time">Live Streaming</p>
+                <div class="line"></div>
+
+                <iframe width="340" height="180" src="https://www.youtube.com/embed/71uSMxIP4Lk"></iframe>
+                <a href="" class="pblack">KL Rahul guiding India's chase a big positive: Ashish Nehra</a>
+                <p class="time">5h ago</p>
+                <div class="line"></div>
+
+                <iframe width="340" height="180" src="https://www.youtube.com/embed/bqFjv2-QkVc"></iframe>
+                <a href="" class="pblack">Live: India v South Africa, 1st T20I, Post-match show</a>
+                <p class="time">12h ago</p>
+                <div class="line"></div>
+
+                <iframe width="340" height="180" src="https://www.youtube.com/embed/WtyeUr15f34"></iframe>
+                <a href="" class="pblack">Comm Box: India v South Africa, 1st T20I, 2nd innings</a>
+                <p class="time">23h ago</p>
+                <div class="line"></div>
+                
+                <iframe width="340" height="180" src="https://www.youtube.com/embed/bqFjv2-QkVc"></iframe>
+                <a href="" class="pblack">Cricbuzz Live हिन्दी: भारत vs ऑस्ट्रेलिया, तीसरा T20I, प्री-मैच शो</a>
+                <p class="time">2d ago</p>
+                <div class="line"></div>
+
+                <br>
+                <div class="gap"></div>
+                <br>
+
+                <h4 class="grnh4">SPECIALS</h4>
+                <a href="">
+                    <img src="https://www.cricbuzz.com/a/img/v1/300x170/i1/c243688/decision-review-system-technol.jpg" alt="">
+                    <h3>September 2022 - News Digest</h3>
+                </a>
+                <p class="pgray">News byte that you may have otherwise missed</p>
+                <br>
+                
+                <a href="">
+                    <img src="https://www.cricbuzz.com/a/img/v1/300x170/i1/c241525/stars-jaw-dropping-bid-estim.jpg" alt="">
+                    <h3>Making sense of Star's multibillion-dollar splurge</h3>
+                </a>
+                <p class="pgray">The Walt Disney-owned media house wiped the opposition out with a jaw-dropping bid estimated at $3.125 billion</p>
+                <br>
+                                
+                <a href="">
+                    <img src="https://www.cricbuzz.com/a/img/v1/300x170/i1/c240747/trent-boult-asked-to-be-releas.jpg" alt="">
+                    <h3>Cricket in Transition: A new game in the birth canal</h3>
+                </a>
+                <p class="pgray">In the first part of a new feature series on Cricbuzz Plus, Bharat Sundaresan outlines the rapid changes that cricket is going through and poses questions about its future</p>
+                <br>
+
+                <a href="">
+                    <img src="https://www.cricbuzz.com/a/img/v1/300x170/i1/c241433/the-knight-riders-owned-by-sha.jpg" alt="">
+                    <h3>Cricket in transition - A global Indian Private League?</h3>
+                </a>
+                <p class="pgray">As cricket becomes increasingly shaped by T20 franchise leagues, a group of Indian businesses are expanding into new frontiers. What's driving them?</p>
+                <br>
+
+                <a href="">
+                    <img src="https://www.cricbuzz.com/a/img/v1/300x170/i1/c240590/gujarat-titans-won-the-ipl-thi.jpg" alt="">
+                    <h3>Chandrakant Pandit's appointment may change outlook of IPL teams</h3>
+                </a>
+                <p class="pgray">If Pandit does succeed with KKR, the IPL owners might start leaning towards appointing Indian coaches</p>
+                <br>
+            </div>
+        </div>
+
+<!-- ************************************************************************************************* -->
+        <div id="footer">
+            <div class="mid">
+                <a href="https://www.cricbuzz.com/" id="logo"><img src="https://www.cricbuzz.com/images/cb_logo.svg" alt=""></a>
+                <div>
+                    <h4>MOBILE SITE & APPS</h4>
+                    <P><a href="https://m.cricbuzz.com/"><i class="fa-solid fa-globe icons"></i>m.cricbuzz.com</a></P>
+                    <P><a href="https://play.google.com/store/apps/details?id=com.cricbuzz.android"><i class="fa-brands fa-android icons"></i>Android</a></P>
+                    <P><a href="https://itunes.apple.com/app/id360466413"><i class="fa-brands fa-apple icons"></i>iOS</a></P>
+                </div>
+                <div>
+                    <h4>FOLLOW US ON</h4>
+                    <P><a href="https://www.facebook.com/cricbuzz"><i class="fa-brands fa-facebook-f icons"></i>facebook</a></P>
+                    <P><a href="https://twitter.com/cricbuzz"><i class="fa-brands fa-twitter icons"></i>twitter</a></P>
+                    <p><a href="https://www.youtube.com/channel/UCSRQXk5yErn4e14vN76upOw"><i class="fa-brands fa-youtube icons"></i>youtube</a></p>
+                    <p><a href="https://in.pinterest.com/cricbuzz/"><i class="fa-brands fa-pinterest-p icons"></i>Pinterest</a></p>
+                </div>
+                <div>   
+                    <h4>COMPANY</h4></a>
+                    <a href="https://www.cricbuzz.com/careers"><p>Careers</p></a>
+                    <a href="https://www.cricbuzz.com/info/advertise"><p>Advertise</p></a>
+                    <a href="https://www.cricbuzz.com/info/privacy"><p>Privacy Policy</p></a>
+                    <a href="https://www.cricbuzz.com/info/termsofuse"><p>Terms of Use</p></a>
+                    <a href="https://www.cricbuzz.com/info/termsofuse"><p>Cricbuzz TV Ads</p></a>
+                </div>
+            </div>
+            <p>© 2022 Cricbuzz.com, Times Internet Limited. All rights reserved | The Times of India | Navbharat Times</p>
+        </div>
+    </div>
+
+
+</body>
+</html>
